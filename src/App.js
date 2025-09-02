@@ -148,9 +148,6 @@ function App() {
 
       <footer className="app-footer">
         <p>Powered by AI • Built with React</p>
-        <p className="api-note">
-          Note: To use OpenAI API, add your API key to the .env file as REACT_APP_OPENAI_API_KEY
-        </p>
       </footer>
     </div>
   );
