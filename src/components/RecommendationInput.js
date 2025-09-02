@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 
-const RecommendationInput = ({ onGetRecommendations, isLoading }) => {
+const RecommendationInput = ({ onGetRecommendations, isLoading, isProductsLoading }) => {
   const [preference, setPreference] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (preference.trim()) {
-      onGetRecommendations(preference.trim());
-    }
+    const query = preference.trim();
+    if (query) onGetRecommendations(query);
   };
 
   return (
     <div className="recommendation-input">
       <h2>AI Product Recommendations</h2>
-      <p>Tell us what you're looking for and our AI will recommend the best products for you!</p>
+      <p>Type your request in natural language. We’ll find the best matches.</p>
       
       <form onSubmit={handleSubmit}>
         <div className="input-group">
@@ -21,28 +20,28 @@ const RecommendationInput = ({ onGetRecommendations, isLoading }) => {
             type="text"
             value={preference}
             onChange={(e) => setPreference(e.target.value)}
-            placeholder="e.g., I want a phone under $500, or I need wireless headphones with noise cancellation"
+            placeholder="e.g., phone under $500, vegan protein powder, running shoes for flat feet"
             className="preference-input"
-            disabled={isLoading}
+            disabled={isLoading || isProductsLoading}
           />
           <button 
             type="submit" 
             className="recommend-btn"
-            disabled={isLoading || !preference.trim()}
+            disabled={isLoading || isProductsLoading || !preference.trim()}
           >
-            {isLoading ? 'Getting Recommendations...' : 'Get Recommendations'}
+            {isProductsLoading ? 'Loading Products...' : (isLoading ? 'Getting Recommendations...' : 'Get Recommendations')}
           </button>
         </div>
       </form>
       
       <div className="example-preferences">
-        <h4>Example preferences:</h4>
+        <h4>Examples:</h4>
         <ul>
           <li>"I want a phone under $500"</li>
-          <li>"I need wireless headphones with noise cancellation"</li>
-          <li>"Show me Apple products"</li>
-          <li>"I need a laptop for work"</li>
-          <li>"Best rated tablets"</li>
+          <li>"Wireless headphones with noise cancellation"</li>
+          <li>"Vegan protein powder with good reviews"</li>
+          <li>"Running shoes for flat feet"</li>
+          <li>"Laptop for programming under $1000"</li>
         </ul>
       </div>
     </div>

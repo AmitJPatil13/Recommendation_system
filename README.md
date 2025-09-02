@@ -7,6 +7,8 @@ A React-based product recommendation system that uses AI to provide intelligent 
 - 🛍️ **Product Catalog**: Browse through a curated list of tech products
 - 🤖 **AI Recommendations**: Get personalized product suggestions using OpenAI's GPT
 - 💡 **Smart Filtering**: Fallback recommendation system when AI API is unavailable
+- 🧠 **Reasons shown**: Each recommendation explains “why this?” (budget, category, features, rating)
+- ↕️ **Sorting**: Relevance, Price (asc/desc), Rating
 - 📱 **Responsive Design**: Works seamlessly on desktop and mobile devices
 - ⚡ **Fast Performance**: Minimal dependencies for optimal loading speed
 
@@ -38,6 +40,33 @@ To use OpenAI's GPT for recommendations:
 
 **Note**: The app works without an API key using a built-in fallback recommendation system.
 
+### Using the built-in proxy (recommended)
+
+Keep your key server-side while the frontend stays keyless.
+
+1. Create a `.env`:
+```
+REACT_APP_USE_PROXY=true
+REACT_APP_PROXY_URL=http://localhost:8787/api/ai
+```
+2. Set the server key in your shell (do NOT commit):
+```
+$env:OPENAI_API_KEY="sk-..."   # Windows PowerShell
+```
+3. Run proxy and frontend in two terminals:
+```
+npm run server
+npm start
+```
+Frontend sends to the proxy, which forwards to OpenAI securely.
+
+## Data Source (Current)
+
+- The app uses a bundled local sample product list by default for stability.
+- Live data has been disabled per current requirements.
+
+If you later want live products, re-enable `fetchLiveProducts` in `src/services/productService.js` and wire it in `src/App.js`.
+
 ## Usage Examples
 
 Try these example preferences:
@@ -46,6 +75,8 @@ Try these example preferences:
 - "Show me Apple products"
 - "I need a laptop for work"
 - "Best rated tablets"
+ - "Vegan protein powder under 1500"
+ - "Running shoes for flat feet"
 
 ## Project Structure
 
@@ -53,14 +84,16 @@ Try these example preferences:
 src/
 ├── components/
 │   ├── ProductCard.js          # Individual product display
-│   └── RecommendationInput.js  # User input form
+│   └── RecommendationInput.js  # Single text input form
 ├── data/
 │   └── products.js            # Product catalog
 ├── services/
-│   └── aiService.js           # AI integration & fallback logic
+│   └── aiService.js           # AI integration, intent parsing, shortlist, reasons
 ├── App.js                     # Main application component
 ├── App.css                    # Styling
 └── index.js                   # Entry point
+
+server.js                      # Minimal proxy for OpenAI (optional)
 ```
 
 ## Technologies Used
